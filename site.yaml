@@ -10,3 +10,9 @@
         upgrade: dist
         cache_valid_time: 7200
         force_apt_get: true
+
+  - name: "installing HAproxy"
+    apt:
+        name: haproxy
+        state: latest
+        force_apt_get: yes
