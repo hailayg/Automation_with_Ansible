@@ -1,0 +1,12 @@
+---
+- hosts: HALB
+  become: yes
+  become_method: sudo
+  tasks:
+
+  - name: "System Update and Package Upgrade"
+    apt:
+        update_cache: true
+        upgrade: dist
+        cache_valid_time: 7200
+        force_apt_get: true
