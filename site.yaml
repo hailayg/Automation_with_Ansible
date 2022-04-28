@@ -16,3 +16,22 @@
         name: haproxy
         state: latest
         force_apt_get: yes
+  
+  - name: "Configuring HAproxy"  
+    template:
+         src: "haproxy.cfg"
+         dest: "/etc/haproxy/haproxy.cfg"
+    notify: "Service Start"
+
+  - name: "Restarting HAproxy"
+    service:
+         name: haproxy
+         state: started
+         enabled: yes
+  handlers:
+  - name: "Service Restart"
+    service:
+         name: haproxy
+         state: restarted
+
+    
