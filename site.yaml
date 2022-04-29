@@ -51,5 +51,7 @@
         mode: '0644'
   - name: "running application.py"
     command: python3 application2.py
+  - name: "pinging webservers"
+    ping:
 
     
