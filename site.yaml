@@ -33,5 +33,23 @@
     service:
          name: haproxy
          state: restarted
+- hosts: webserver
+  become: yes
+  become_method: sudo
+  
+  tasks:
+  - name: "installing pip3"
+    pip:
+        name: pip
+        extra_args: --upgrade
+        executable: pip3
+  - name: "copying Application2.py"
+    copy:
+        src: application2.py
+        dest: /home/ubuntu/application2.py
+        owner: ubuntu
+        mode: '0644'
+  - name: "running application.py"
+    command: python3 application2.py
 
     
