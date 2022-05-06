@@ -1,7 +1,7 @@
 [HALB]
-HAproxy ansible_host=10.0.1.26 ansible_user=ubuntu
+HAproxy  ansible_user=ubuntu
 
 [webserver]
-devA ansible_host=10.0.1.13 ansible_user=ubuntu
-devB ansible_host=10.0.1.18 ansible_user=ubuntu
-devC ansible_host=10.0.1.20 ansible_user=ubuntu
+devA  ansible_user=ubuntu
+devB  ansible_user=ubuntu
+devC  ansible_user=ubuntu

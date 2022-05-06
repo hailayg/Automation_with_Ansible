@@ -19,7 +19,7 @@
   
   - name: "Configuring HAproxy"  
     template:
-         src: "haproxy.cfg"
+         src: "./haproxy.j2"
          dest: "/etc/haproxy/haproxy.cfg"
     notify: "Service Start"
 
@@ -49,9 +49,15 @@
         dest: /home/ubuntu/application2.py
         owner: ubuntu
         mode: '0644'
-  - name: "running application.py"
-    command: python3 application2.py
-  - name: "pinging webservers"
-    ping:
+  - name: "Running Flask app"
+    shell: |
+        export FLASK_APP=./application2.py
+        export FLASK_RUN_HOST=0.0.0.0
+        export FLASK_RUN_PORT=8080
+        flask run
+        
+    
+
+
 
     
