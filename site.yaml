@@ -23,6 +23,8 @@
          dest: "/etc/haproxy/haproxy.cfg"
     notify: "service start"
 
+    
+
   - name: "Restarting HAproxy"
     service:
          name: haproxy
