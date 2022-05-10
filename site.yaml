@@ -1,50 +1,52 @@
 ---
-- hosts: HALB
+- hosts: webservers 
+  gather_facts: yes
+- hosts: HAproxy
+  gather_facts: yes
   become: yes
   become_method: sudo
+  
   tasks:
-
-  - name: "System Update and Package Upgrade"
+  - name: "system update and package upgrade"
     apt:
         update_cache: true
         upgrade: dist
-        cache_valid_time: 7200
+        cache_valid_time: 3600
         force_apt_get: true
-
+        
   - name: "installing HAproxy"
     apt:
         name: haproxy
         state: latest
         force_apt_get: yes
-  
+        
   - name: "Configuring HAproxy"  
     template:
          src: "./haproxy.j2"
          dest: "/etc/haproxy/haproxy.cfg"
     notify: "service start"
-
-    
-
-  - name: "Restarting HAproxy"
+  
+  - name: "restarting HAproxy"
     service:
          name: haproxy
          state: started
          enabled: yes
+  
   handlers:
-  - name: "Service Restart"
+  - name: "service restart"
     service:
          name: haproxy
          state: restarted
-- hosts: webserver
-  become: yes
-  become_method: sudo
-  
+              
+- hosts: webservers
+  gather_facts: yes
   tasks:
   - name: "installing pip3"
     pip:
         name: pip
         extra_args: --upgrade
         executable: pip3
+        
   - name: "copying Application2.py"
     copy:
         src: application2.py
@@ -57,9 +59,9 @@
         export FLASK_RUN_HOST=0.0.0.0
         export FLASK_RUN_PORT=8080
         flask run
-        
-    
+        bg
+   
 
 
 
-    
+

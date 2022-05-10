@@ -39,14 +39,14 @@ frontend haproxynode
 
 backend backendnodes
     balance roundrobin
-    {% for servers in groups["webserver"] %}
-        server  {{ servers }} {{ hostvars[servers].ansible_host }}:8080 check
+    {% for servers in groups["webservers"] %}
+        server  {{ servers }} {{ hostvars[servers]['ansible_default_ipv4']['address'] }}:8080 check
     {% endfor %}
-
+    
 listen stats
     bind *:8404
     stats enable
-    stats uri /monitor
+    stats uri /monito
     stats refresh 5s
 
 
