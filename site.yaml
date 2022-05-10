@@ -11,7 +11,7 @@
     apt:
         update_cache: true
         upgrade: dist
-        cache_valid_time: 3600
+        cache_valid_time: 7200
         force_apt_get: true
         
   - name: "installing HAproxy"
@@ -59,7 +59,7 @@
         export FLASK_RUN_HOST=0.0.0.0
         export FLASK_RUN_PORT=8080
         flask run
-        bg
+        
    
 
 
