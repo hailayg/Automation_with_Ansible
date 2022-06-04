@@ -31,13 +31,23 @@
          name: haproxy
          state: started
          enabled: yes
+  - name: "installing Nginx"
+    apt:
+        name: nginx
+        state: latest
+        force_apt_get: yes
+    notify: "restart nginx"
   
   handlers:
   - name: "Start HAproxy"
     service:
          name: haproxy
          state: restarted
-              
+  - name: "restart nginx"
+    service:
+         name: nginx
+         state: restarted
+           
 - hosts: webservers
   gather_facts: yes
   tasks:
