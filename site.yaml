@@ -41,6 +41,14 @@
 - hosts: webservers
   gather_facts: yes
   tasks:
+  - name: "system update and package upgrade on webservers"
+    become: yes
+    become_method: sudo
+    apt:
+        update_cache: true
+        upgrade: dist
+        cache_valid_time: 7200
+        force_apt_get: true
   - name: "installing pip3"
     pip:
         name: pip
@@ -61,6 +69,7 @@
         flask run
         
    
+
 
 
 
