@@ -31,21 +31,21 @@
          name: haproxy
          state: started
          enabled: yes
+
   - name: "installing Nginx"
     apt:
         name: nginx
         state: latest
         force_apt_get: yes
-    notify: "restart nginx"
-  
+  - name: "Configuring UDP loadbalancing"  
+    template:
+         src: "./nginx.j2"
+         dest: "/etc/nginx/nginx.cfg"
+
   handlers:
   - name: "Start HAproxy"
     service:
          name: haproxy
-         state: restarted
-  - name: "restart nginx"
-    service:
-         name: nginx
          state: restarted
            
 - hosts: webservers
