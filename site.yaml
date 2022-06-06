@@ -59,6 +59,17 @@
         upgrade: dist
         cache_valid_time: 7200
         force_apt_get: true
+  - name: "installing snmpd"
+    become: yes
+    become_method: sudo
+    apt:
+        name: snmpd
+        state: latest
+  - name: "restarting snmpd"
+    service:
+         name: snmpd
+         state: started
+         enabled: yes
   - name: "installing pip3"
     pip:
         name: pip
