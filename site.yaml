@@ -19,8 +19,7 @@
         name: haproxy
         state: latest
         force_apt_get: yes
-        
-  - name: "Configuring HAproxy"  
+  - name: "Configuring HAproxy"
     template:
          src: "./haproxy.j2"
          dest: "/etc/haproxy/haproxy.cfg"
@@ -29,9 +28,8 @@
   - name: "restarting HAproxy"
     service:
          name: haproxy
-         state: started
-         enabled: yes
-
+         state: restarted
+         enabled: yes      
   - name: "installing Nginx"
     apt:
         name: nginx
@@ -40,8 +38,11 @@
   - name: "Configuring UDP loadbalancing"  
     template:
          src: "./nginx.j2"
-         dest: "/etc/nginx/nginx.cfg"
-
+         dest: "/etc/nginx/nginx.conf"
+  - name: "restarting nginx"
+    service:
+         name: nginx
+         state: restarted
   handlers:
   - name: "Start HAproxy"
     service:
@@ -49,33 +50,40 @@
          state: restarted
            
 - hosts: webservers
+  become: yes
+  become_method: sudo
   gather_facts: yes
   tasks:
   - name: "system update and package upgrade on webservers"
-    become: yes
-    become_method: sudo
     apt:
         update_cache: true
-        upgrade: dist
         cache_valid_time: 7200
         force_apt_get: true
+  - name: "installing pip3"
+    apt:
+        name: python3-pip
+  - name: "installing gunicorn"
+    apt:
+        name: gunicorn
+
+  - name: "installing flask"
+    apt:
+        name: python3-flask
   - name: "installing snmpd"
-    become: yes
-    become_method: sudo
     apt:
         name: snmpd
         state: latest
+  - name: "Configuring snmpd" 
+    template:
+         src: "./snmpd.conf"
+         dest: "/etc/snmp/snmpd.conf"
+    
   - name: "restarting snmpd"
     service:
          name: snmpd
-         state: started
+         state: restarted
          enabled: yes
-  - name: "installing pip3"
-    pip:
-        name: pip
-        extra_args: --upgrade
-        executable: pip3
-        
+
   - name: "copying Application2.py"
     copy:
         src: application2.py
@@ -83,11 +91,10 @@
         owner: ubuntu
         mode: '0644'
   - name: "Running Flask app"
-    shell: |
-        export FLASK_APP=./application2.py
-        export FLASK_RUN_HOST=0.0.0.0
-        export FLASK_RUN_PORT=8080
-        flask run
+    shell: gunicorn -w 2 -D -b 0.0.0.0:8080 application2:app
+        
+
+        
         
    
 
