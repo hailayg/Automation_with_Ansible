@@ -15,8 +15,14 @@
 update cashe if not updated for at least two hours
 install HAproxy if not installed 
 configure HAproxy
-install pip3 in the Application servers if not installed
-deploy flask app into Webservers servers 
+install nginx if not installed 
+configure nginx
+install pip3 in the dev servers if not installed
+install flask in the dev servers if not installed
+install snmpd in the dev servers if not installed
+deploy flask app into dev servers 
+install gunicorn in the dev servers if not installed
+run flask app in the dev servers 
 
 
 
